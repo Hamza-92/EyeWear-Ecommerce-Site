@@ -1,0 +1,40 @@
+@import "@eyewear/ui/styles.css";
+@import "tailwindcss";
+
+@theme inline {
+  --color-canvas: var(--color-ivory);
+  --color-surface: var(--color-surface-warm);
+  --color-ink: var(--color-text-primary);
+  --color-action: var(--color-obsidian);
+  --color-copy: var(--color-text-secondary);
+  --color-subtle: var(--color-text-muted);
+  --color-accent: var(--color-champagne);
+  --color-accent-soft: var(--color-champagne-light);
+  --color-line: var(--color-border);
+  --color-line-soft: var(--color-border-soft);
+}
+
+.skip-link {
+  position: fixed;
+  z-index: 100;
+  top: 0.75rem;
+  left: 0.75rem;
+  padding: 0.75rem 1rem;
+  background: var(--color-obsidian);
+  color: var(--color-ivory);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transform: translateY(-150%);
+  transition: transform var(--duration-fast) var(--ease-premium);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+.frame-motif {
+  filter: drop-shadow(0 2rem 2.5rem rgb(23 22 19 / 8%));
+}

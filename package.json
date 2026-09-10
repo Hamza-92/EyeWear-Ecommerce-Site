@@ -1,0 +1,35 @@
+{
+  "name": "premium-eyewear-platform",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Reusable premium eyewear commerce platform.",
+  "workspaces": [
+    "apps/storefront",
+    "apps/backend",
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "npm run build --workspace @eyewear/storefront && npm run build --workspace @eyewear/backend",
+    "dev:storefront": "npm run dev --workspace @eyewear/storefront",
+    "dev:admin": "npm run dev --workspace @eyewear/backend",
+    "dev:backend": "composer --working-dir=apps/backend run dev:server",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "npm run lint --workspace @eyewear/storefront && npm run lint --workspace @eyewear/backend && composer --working-dir=apps/backend run lint",
+    "test": "composer --working-dir=apps/backend run test",
+    "typecheck": "npm run typecheck --workspace @eyewear/storefront && npm run typecheck --workspace @eyewear/backend",
+    "verify": "npm run format:check && npm run lint && npm run typecheck && npm run test && npm run build"
+  },
+  "engines": {
+    "node": ">=20.9.0",
+    "npm": ">=10.0.0"
+  },
+  "packageManager": "npm@11.17.0",
+  "devDependencies": {
+    "prettier": "^3.6.2"
+  },
+  "allowScripts": {
+    "esbuild@0.28.2": true,
+    "unrs-resolver": false
+  }
+}
