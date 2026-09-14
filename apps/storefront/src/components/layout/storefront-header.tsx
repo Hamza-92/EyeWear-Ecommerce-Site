@@ -8,6 +8,7 @@ export function StorefrontHeader() {
       storeName={storeConfig.name}
       items={primaryNavigation}
       utilityLinks={utilityNavigation}
+      cartCount={0}
     />
   );
 }

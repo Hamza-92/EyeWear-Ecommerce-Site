@@ -27,6 +27,7 @@ type HeaderNavigationProps = Readonly<{
   storeName: string;
   items: readonly NavigationItem[];
   utilityLinks: readonly NavigationLink[];
+  cartCount: number;
 }>;
 
 const focusableSelector = [
@@ -46,12 +47,8 @@ function LogoPlaceholder({ storeName }: Readonly<{ storeName: string }>) {
       aria-label={`${storeName} home`}
     >
       <span aria-hidden="true" className="leading-none">
-        <span className="block text-[0.625rem] font-bold tracking-[0.18em] uppercase">
-          Logo placeholder
-        </span>
-        <span className="mt-1 block text-[0.5625rem] tracking-[0.08em] text-subtle uppercase">
-          180 × 48 px · SVG
-        </span>
+        <span className="header-type-logo block">Logo placeholder</span>
+        <span className="header-type-logo-spec mt-1 block text-subtle">180 × 48 px · SVG</span>
       </span>
     </Link>
   );
@@ -76,28 +73,26 @@ function IconLink({
 function PromotionCard({
   promotion,
   onNavigate,
+  imageClassName = "aspect-[4/5]",
 }: Readonly<{
   promotion: NavigationItem["promotions"][number];
   onNavigate: () => void;
+  imageClassName?: string;
 }>) {
   return (
     <a href={promotion.href} className="group block" onClick={onNavigate}>
-      <div className="relative aspect-[4/5] overflow-hidden bg-surface">
+      <div className={`relative overflow-hidden bg-surface ${imageClassName}`}>
         <Image
           src={promotion.imageSrc}
           alt={promotion.imageAlt}
           fill
-          sizes="(min-width: 1280px) 16vw, 42vw"
+          sizes="(min-width: 1280px) 20vw, (min-width: 640px) 42vw, 88vw"
           className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.025]"
           style={{ objectPosition: promotion.imagePosition }}
         />
       </div>
-      <p className="mt-4 text-[0.625rem] font-bold tracking-[0.18em] text-subtle uppercase">
-        {promotion.eyebrow}
-      </p>
-      <p className="mt-1.5 max-w-[18rem] font-[family-name:var(--font-display)] text-[1.375rem] leading-[1.05] text-ink">
-        {promotion.title}
-      </p>
+      <p className="header-type-label mt-4 text-subtle">{promotion.eyebrow}</p>
+      <p className="header-type-editorial-copy mt-1.5 max-w-[18rem] text-ink">{promotion.title}</p>
     </a>
   );
 }
@@ -125,14 +120,12 @@ function DesktopMegaPanel({
         <div className="flex flex-col">
           <div className="flex items-end justify-between border-b border-line-soft pb-5">
             <div>
-              <p className="ui-eyebrow">Explore</p>
-              <h2 className="mt-2 font-[family-name:var(--font-display)] text-4xl leading-none">
-                {item.label}
-              </h2>
+              <p className="header-type-label text-subtle">Explore</p>
+              <h2 className="header-type-editorial-heading mt-2">{item.label}</h2>
             </div>
             <a
               href={item.href}
-              className="group inline-flex min-h-11 items-center gap-2 text-[0.6875rem] font-bold tracking-[0.12em] uppercase"
+              className="header-type-action group inline-flex min-h-11 items-center gap-2"
               onClick={onNavigate}
               data-mega-link
             >
@@ -144,10 +137,7 @@ function DesktopMegaPanel({
           <div className="grid flex-1 grid-cols-3 gap-8 pt-7">
             {item.sections.map((section) => (
               <section key={section.title} aria-labelledby={`${item.id}-${section.title}`}>
-                <h3
-                  id={`${item.id}-${section.title}`}
-                  className="text-[0.625rem] font-bold tracking-[0.18em] text-subtle uppercase"
-                >
+                <h3 id={`${item.id}-${section.title}`} className="header-type-label text-subtle">
                   {section.title}
                 </h3>
                 <ul className="mt-3 space-y-0.5">
@@ -155,7 +145,7 @@ function DesktopMegaPanel({
                     <li key={link.href}>
                       <a
                         href={link.href}
-                        className="inline-flex min-h-11 items-center text-sm leading-6 text-ink underline-offset-4 transition-colors hover:text-copy hover:underline"
+                        className="header-type-link inline-flex min-h-11 items-center text-ink underline-offset-4 transition-colors hover:text-copy hover:underline"
                         onClick={onNavigate}
                         data-mega-link
                       >
@@ -169,12 +159,13 @@ function DesktopMegaPanel({
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-5">
+        <div className="grid grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] gap-5">
           {item.promotions.map((promotion) => (
             <PromotionCard
               key={`${item.id}-${promotion.href}`}
               promotion={promotion}
               onNavigate={onNavigate}
+              imageClassName="h-[clamp(17.5rem,25vw,22.25rem)]"
             />
           ))}
         </div>
@@ -206,7 +197,7 @@ function MobileNavigation({
           <div key={item.id} className="border-b border-line-soft">
             <button
               type="button"
-              className="flex min-h-16 w-full items-center justify-between gap-5 py-3 text-left text-[0.75rem] font-bold tracking-[0.12em] uppercase"
+              className="header-type-primary flex min-h-16 w-full items-center justify-between gap-5 py-3 text-left"
               aria-expanded={isExpanded}
               aria-controls={`mobile-panel-${item.id}`}
               onClick={() => setExpandedItemId(isExpanded ? null : item.id)}
@@ -231,7 +222,7 @@ function MobileNavigation({
                     <div>
                       <a
                         href={item.href}
-                        className="group inline-flex min-h-11 items-center gap-2 text-sm font-semibold underline underline-offset-4"
+                        className="header-type-action group inline-flex min-h-11 items-center gap-2 underline underline-offset-4"
                         onClick={onNavigate}
                       >
                         View all {item.label.toLowerCase()}
@@ -240,15 +231,13 @@ function MobileNavigation({
                       <div className="mt-6 grid grid-cols-2 gap-x-6 gap-y-7 sm:grid-cols-1">
                         {item.sections.map((section) => (
                           <section key={section.title}>
-                            <h3 className="text-[0.625rem] font-bold tracking-[0.18em] text-subtle uppercase">
-                              {section.title}
-                            </h3>
+                            <h3 className="header-type-label text-subtle">{section.title}</h3>
                             <ul className="mt-2 space-y-0.5">
                               {section.links.map((link) => (
                                 <li key={link.href}>
                                   <a
                                     href={link.href}
-                                    className="inline-flex min-h-11 items-center text-sm leading-6"
+                                    className="header-type-link inline-flex min-h-11 items-center"
                                     onClick={onNavigate}
                                   >
                                     {link.label}
@@ -298,10 +287,8 @@ function SearchPanel({
         <div className="mx-auto max-w-4xl">
           <div className="flex items-center justify-between gap-5">
             <div>
-              <p className="ui-eyebrow">Search</p>
-              <h2 className="mt-1 font-[family-name:var(--font-display)] text-3xl leading-none sm:text-4xl">
-                What are you looking for?
-              </h2>
+              <p className="header-type-label text-subtle">Search</p>
+              <h2 className="header-type-editorial-heading mt-1">What are you looking for?</h2>
             </div>
             <button
               type="button"
@@ -332,7 +319,7 @@ function SearchPanel({
             />
             <button
               type="submit"
-              className="inline-flex min-h-14 items-center gap-2 pl-5 text-[0.6875rem] font-bold tracking-[0.12em] uppercase"
+              className="header-type-action inline-flex min-h-14 items-center gap-2 pl-5"
             >
               Search
               <ArrowRightIcon className="size-4" />
@@ -347,7 +334,12 @@ function SearchPanel({
   );
 }
 
-export function HeaderNavigation({ storeName, items, utilityLinks }: HeaderNavigationProps) {
+export function HeaderNavigation({
+  storeName,
+  items,
+  utilityLinks,
+  cartCount,
+}: HeaderNavigationProps) {
   const [activeMenuId, setActiveMenuId] = useState<string | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [expandedMobileItemId, setExpandedMobileItemId] = useState<string | null>(null);
@@ -360,6 +352,10 @@ export function HeaderNavigation({ storeName, items, utilityLinks }: HeaderNavig
   const searchInputRef = useRef<HTMLInputElement>(null);
   const desktopTriggerRefs = useRef<Array<HTMLButtonElement | null>>([]);
   const activeItem = items.find((item) => item.id === activeMenuId) ?? null;
+  const normalizedCartCount = Number.isFinite(cartCount) ? Math.max(0, Math.trunc(cartCount)) : 0;
+  const cartLabel = `Shopping bag, ${normalizedCartCount} ${
+    normalizedCartCount === 1 ? "item" : "items"
+  }`;
 
   const closeTransientNavigation = () => {
     setActiveMenuId(null);
@@ -534,7 +530,7 @@ export function HeaderNavigation({ storeName, items, utilityLinks }: HeaderNavig
         data-testid="announcement-bar"
         onPointerEnter={() => setActiveMenuId(null)}
       >
-        <div className="ui-container flex min-h-11 items-center justify-center text-[0.625rem] font-semibold tracking-[0.1em] uppercase sm:justify-between">
+        <div className="header-type-utility ui-container flex min-h-11 items-center justify-center sm:justify-between">
           <p>Complimentary delivery on qualifying orders</p>
           <nav aria-label="Utility navigation" className="hidden items-center gap-6 md:flex">
             {utilityLinks.map((link) => (
@@ -569,7 +565,7 @@ export function HeaderNavigation({ storeName, items, utilityLinks }: HeaderNavig
                   }}
                   id={`mega-trigger-${item.id}`}
                   type="button"
-                  className="group relative flex min-h-11 items-center gap-1.5 px-4 text-[0.6875rem] font-bold tracking-[0.12em] uppercase 2xl:px-5"
+                  className="header-type-primary group relative flex min-h-11 items-center gap-1.5 px-4 2xl:px-5"
                   aria-expanded={isActive}
                   aria-controls={`mega-panel-${item.id}`}
                   onClick={() => {
@@ -617,11 +613,13 @@ export function HeaderNavigation({ storeName, items, utilityLinks }: HeaderNavig
                 <HeartIcon className="size-5" />
               </IconLink>
             </span>
-            <IconLink href="/bag" label="Shopping bag, 0 items">
+            <IconLink href="/bag" label={cartLabel}>
               <BagIcon className="size-5" />
-              <span className="absolute top-1.5 right-1.5 flex size-4 items-center justify-center bg-ink text-[0.5625rem] font-bold text-white">
-                0
-              </span>
+              {normalizedCartCount > 0 ? (
+                <span className="header-type-badge absolute top-1.5 right-1 flex h-4 min-w-4 items-center justify-center bg-ink px-1 text-white">
+                  {normalizedCartCount}
+                </span>
+              ) : null}
             </IconLink>
             <button
               type="button"
@@ -717,25 +715,25 @@ export function HeaderNavigation({ storeName, items, utilityLinks }: HeaderNavig
               <div className="mt-auto grid grid-cols-2 gap-px border-t border-line-soft bg-line-soft py-px sm:grid-cols-4">
                 <a
                   href="/search"
-                  className="flex min-h-14 items-center gap-3 bg-canvas px-4 text-xs font-semibold uppercase"
+                  className="header-type-action flex min-h-14 items-center gap-3 bg-canvas px-4"
                 >
                   <SearchIcon className="size-4" /> Search
                 </a>
                 <a
                   href="/account"
-                  className="flex min-h-14 items-center gap-3 bg-canvas px-4 text-xs font-semibold uppercase"
+                  className="header-type-action flex min-h-14 items-center gap-3 bg-canvas px-4"
                 >
                   <AccountIcon className="size-4" /> Account
                 </a>
                 <a
                   href="/wishlist"
-                  className="flex min-h-14 items-center gap-3 bg-canvas px-4 text-xs font-semibold uppercase"
+                  className="header-type-action flex min-h-14 items-center gap-3 bg-canvas px-4"
                 >
                   <HeartIcon className="size-4" /> Wishlist
                 </a>
                 <a
                   href="/help"
-                  className="flex min-h-14 items-center bg-canvas px-4 text-xs font-semibold uppercase"
+                  className="header-type-action flex min-h-14 items-center bg-canvas px-4"
                 >
                   Help
                 </a>

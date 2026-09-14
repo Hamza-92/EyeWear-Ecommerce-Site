@@ -4,12 +4,13 @@ import { describe, expect, it } from "vitest";
 import { HeaderNavigation } from "@/components/layout/header-navigation";
 import { primaryNavigation, utilityNavigation } from "@/config/navigation";
 
-function renderHeader() {
+function renderHeader(cartCount = 0) {
   return render(
     <HeaderNavigation
       storeName="Test Eyewear"
       items={primaryNavigation}
       utilityLinks={utilityNavigation}
+      cartCount={cartCount}
     />,
   );
 }
@@ -83,6 +84,25 @@ describe("HeaderNavigation", () => {
         name: "Close search",
       }),
     ).toBeVisible();
+  });
+
+  it("only renders a cart badge when the cart contains items", () => {
+    const { rerender } = renderHeader();
+
+    const emptyBagLink = screen.getByRole("link", { name: "Shopping bag, 0 items" });
+    expect(within(emptyBagLink).queryByText("0")).not.toBeInTheDocument();
+
+    rerender(
+      <HeaderNavigation
+        storeName="Test Eyewear"
+        items={primaryNavigation}
+        utilityLinks={utilityNavigation}
+        cartCount={3}
+      />,
+    );
+
+    const filledBagLink = screen.getByRole("link", { name: "Shopping bag, 3 items" });
+    expect(within(filledBagLink).getByText("3")).toBeVisible();
   });
 
   it("provides an expandable, focus-managed mobile menu", async () => {
