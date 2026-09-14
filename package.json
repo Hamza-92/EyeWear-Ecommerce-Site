@@ -16,12 +16,12 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "lint": "npm run lint --workspace @eyewear/storefront && npm run lint --workspace @eyewear/backend && composer --working-dir=apps/backend run lint",
-    "test": "composer --working-dir=apps/backend run test",
+    "test": "npm run test --workspace @eyewear/storefront && composer --working-dir=apps/backend run test",
     "typecheck": "npm run typecheck --workspace @eyewear/storefront && npm run typecheck --workspace @eyewear/backend",
     "verify": "npm run format:check && npm run lint && npm run typecheck && npm run test && npm run build"
   },
   "engines": {
-    "node": ">=20.9.0",
+    "node": ">=20.19.0",
     "npm": ">=10.0.0"
   },
   "packageManager": "npm@11.17.0",

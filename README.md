@@ -23,7 +23,7 @@ requirement. The application structure does not depend on Laravel 12-specific bu
 
 ## Prerequisites
 
-- Node.js 20.9 or newer and npm 10 or newer
+- Node.js 20.19 or newer and npm 10 or newer
 - PHP 8.2 or newer with `pdo_pgsql`
 - Composer 2
 - Docker Desktop (recommended for local PostgreSQL and Redis)

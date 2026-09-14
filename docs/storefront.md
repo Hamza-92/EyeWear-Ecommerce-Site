@@ -40,3 +40,29 @@ availability and price data.
 `src/config/store.ts` is a temporary environment-backed public identity. It uses a shared contract
 and can later consume a host-resolved configuration endpoint. Never expose provider credentials or
 private store settings through `NEXT_PUBLIC_*` variables.
+
+## Header prototype
+
+The current customer-facing build intentionally contains only the storefront header. Navigation
+content lives in `src/config/navigation.ts`, separate from the interactive component, so a CMS or
+store-scoped API can replace the proposal copy without changing the header structure. The links
+describe planned storefront routes; their destination pages are deliberately outside this
+header-only design stage.
+
+Desktop navigation uses full-width editorial panels with three link groups and two promotional
+images. The same information becomes expandable sections in a focus-trapped mobile dialog. The menu
+supports pointer, click, Escape, Home/End, left/right arrow navigation between triggers, and Arrow
+Down into the active panel. Search is a separate, labelled region and receives focus when it opens.
+All motion honors the user's reduced-motion preference.
+
+### Replaceable brand and image assets
+
+- Logo: supply SVG where possible. The desktop artwork slot is `180 × 48 px`; provide a transparent
+  `360 × 96 px` PNG if raster artwork is required. On narrow screens it is contained within a
+  `124 × 44 px` area without changing the artwork ratio.
+- Mega-menu photography: use portrait `4:5` images, ideally at least `1600 × 2000 px`, with the main
+  subject kept away from the outer edges. Final WebP or AVIF files should normally remain below
+  `350 KB` after visual review.
+- Temporary proposal images are stored in `public/images/navigation`. They are original AI test
+  assets with no embedded brand marks and may be replaced by changing only the image paths and alt
+  text in `src/config/navigation.ts`.
