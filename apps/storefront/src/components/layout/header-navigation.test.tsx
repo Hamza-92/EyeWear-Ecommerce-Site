@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { describe, expect, it } from "vitest";
 import { HeaderNavigation } from "@/components/layout/header-navigation";
 import { primaryNavigation, utilityNavigation } from "@/config/navigation";
+import { searchPreviewContent } from "@/config/search-preview";
 
 function renderHeader(cartCount = 0) {
   return render(
@@ -10,6 +11,7 @@ function renderHeader(cartCount = 0) {
       storeName="Test Eyewear"
       items={primaryNavigation}
       utilityLinks={utilityNavigation}
+      searchContent={searchPreviewContent}
       cartCount={cartCount}
     />,
   );
@@ -79,11 +81,97 @@ describe("HeaderNavigation", () => {
       name: "Search frames, designers and collections",
     });
     await waitFor(() => expect(input).toHaveFocus());
+    expect(document.body).toHaveStyle({ overflow: "hidden" });
     expect(
       within(screen.getByRole("region", { name: "Search the catalogue" })).getByRole("button", {
         name: "Close search",
       }),
     ).toBeVisible();
+    expect(screen.getByRole("heading", { name: "Popular searches" })).toBeVisible();
+    expect(screen.getByRole("status")).toHaveTextContent("Popular products");
+    expect(screen.getByRole("link", { name: /Aster & Row Atelier 01/ })).toBeVisible();
+
+    await user.keyboard("{Escape}");
+    await waitFor(() =>
+      expect(
+        screen.queryByRole("region", { name: "Search the catalogue" }),
+      ).not.toBeInTheDocument(),
+    );
+    expect(document.body).not.toHaveStyle({ overflow: "hidden" });
+    expect(screen.getByRole("button", { name: "Open search" })).toHaveFocus();
+  });
+
+  it("updates predictive results after a simulated async search", async () => {
+    const user = userEvent.setup();
+    renderHeader();
+
+    await user.click(screen.getByRole("button", { name: "Open search" }));
+    const input = screen.getByRole("searchbox", {
+      name: "Search frames, designers and collections",
+    });
+
+    await user.type(input, "titanium");
+    expect(screen.getByRole("status")).toHaveTextContent("Searching catalogue");
+    expect(screen.getByRole("button", { name: "Clear search" })).toBeVisible();
+
+    await waitFor(() => expect(screen.getByRole("status")).toHaveTextContent("3 results"));
+    expect(screen.getByRole("heading", { name: "Related searches" })).toBeVisible();
+    expect(screen.getByRole("button", { name: "Titanium eyeglasses" })).toBeVisible();
+    expect(screen.getByRole("link", { name: /Kanso Studio Hikari/ })).toBeVisible();
+    expect(screen.getByRole("link", { name: /Lumen Works Solis/ })).toBeVisible();
+    expect(screen.queryByRole("link", { name: /Aster & Row Atelier 01/ })).not.toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "View all results" })).toHaveAttribute(
+      "href",
+      "/search?q=titanium",
+    );
+
+    await user.click(screen.getByRole("button", { name: "Clear search" }));
+    expect(input).toHaveValue("");
+    expect(screen.queryByRole("button", { name: "Clear search" })).not.toBeInTheDocument();
+    expect(screen.getByRole("status")).toHaveTextContent("Popular products");
+  });
+
+  it("keeps genuine recent searches for the current browsing session", async () => {
+    const user = userEvent.setup();
+    renderHeader();
+
+    await user.click(screen.getByRole("button", { name: "Open search" }));
+    const searchRegion = screen.getByRole("region", { name: "Search the catalogue" });
+    const input = within(searchRegion).getByRole("searchbox", {
+      name: "Search frames, designers and collections",
+    });
+
+    await user.type(input, "round");
+    await user.click(within(searchRegion).getByRole("button", { name: "Search" }));
+    await user.click(within(searchRegion).getByRole("button", { name: "Clear search" }));
+
+    const recentSearches = within(searchRegion).getByRole("region", {
+      name: "Recent searches",
+    });
+    expect(within(recentSearches).getByRole("button", { name: "round" })).toBeVisible();
+
+    await user.click(within(recentSearches).getByRole("button", { name: "Clear" }));
+    expect(
+      within(searchRegion).queryByRole("region", { name: "Recent searches" }),
+    ).not.toBeInTheDocument();
+  });
+
+  it("shows a useful empty state for an unmatched search", async () => {
+    const user = userEvent.setup();
+    renderHeader();
+
+    await user.click(screen.getByRole("button", { name: "Open search" }));
+    await user.type(
+      screen.getByRole("searchbox", {
+        name: "Search frames, designers and collections",
+      }),
+      "rimless",
+    );
+
+    await waitFor(() => expect(screen.getByRole("status")).toHaveTextContent("0 results"));
+    expect(screen.getByRole("heading", { name: "No exact matches" })).toBeVisible();
+    expect(screen.getByText("You may also like")).toBeVisible();
+    expect(screen.getByRole("link", { name: /Aster & Row Atelier 01/ })).toBeVisible();
   });
 
   it("only renders a cart badge when the cart contains items", () => {
@@ -97,6 +185,7 @@ describe("HeaderNavigation", () => {
         storeName="Test Eyewear"
         items={primaryNavigation}
         utilityLinks={utilityNavigation}
+        searchContent={searchPreviewContent}
         cartCount={3}
       />,
     );

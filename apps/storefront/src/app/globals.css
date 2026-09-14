@@ -109,6 +109,39 @@ html {
   line-height: 1.08;
 }
 
+.header-search-form {
+  border-bottom: 1px solid var(--color-border);
+  transition:
+    border-color var(--duration-fast) var(--ease-premium),
+    box-shadow var(--duration-fast) var(--ease-premium);
+}
+
+.header-search-form:focus-within {
+  border-color: var(--color-obsidian);
+  box-shadow: 0 1px 0 var(--color-obsidian);
+}
+
+.header-search-input:focus-visible {
+  outline: none;
+}
+
+.header-search-input::-webkit-search-cancel-button,
+.header-search-input::-webkit-search-decoration {
+  appearance: none;
+}
+
+.header-search-clear-control,
+.header-search-muted-action {
+  color: var(--color-text-secondary);
+}
+
+.header-search-clear-control:hover,
+.header-search-clear-control:focus-visible,
+.header-search-muted-action:hover,
+.header-search-muted-action:focus-visible {
+  color: var(--color-text-primary);
+}
+
 .skip-link {
   position: fixed;
   z-index: 100;

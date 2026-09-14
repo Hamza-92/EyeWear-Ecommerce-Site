@@ -55,6 +55,13 @@ supports pointer, click, Escape, Home/End, left/right arrow navigation between t
 Down into the active panel. Search is a separate, labelled region and receives focus when it opens.
 All motion honors the user's reduced-motion preference.
 
+The header search currently behaves like a predictive AJAX search while remaining proposal-only. Its
+replaceable sample catalogue lives in `src/config/search-preview.ts`; the client panel simulates a
+short request delay and renders popular, loading, filtered, and empty states without calling a
+backend. The form retains a `/search?q=` destination for the future server-rendered results route.
+Replace the sample content with a typed Laravel catalogue gateway during the vertical catalog slice,
+without changing the presentation component.
+
 ### Replaceable brand and image assets
 
 - Logo: supply SVG where possible. The desktop artwork slot is `180 × 48 px`; provide a transparent

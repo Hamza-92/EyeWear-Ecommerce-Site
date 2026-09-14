@@ -9,7 +9,6 @@ import {
   useState,
   type KeyboardEvent as ReactKeyboardEvent,
   type ReactNode,
-  type RefObject,
 } from "react";
 import {
   AccountIcon,
@@ -21,12 +20,15 @@ import {
   MenuIcon,
   SearchIcon,
 } from "@/components/icons/header-icons";
+import { HeaderSearchPanel } from "@/components/layout/header-search-panel";
 import type { NavigationItem, NavigationLink } from "@/config/navigation";
+import type { SearchPreviewContent } from "@/config/search-preview";
 
 type HeaderNavigationProps = Readonly<{
   storeName: string;
   items: readonly NavigationItem[];
   utilityLinks: readonly NavigationLink[];
+  searchContent: SearchPreviewContent;
   cartCount: number;
 }>;
 
@@ -264,86 +266,18 @@ function MobileNavigation({
   );
 }
 
-function SearchPanel({
-  inputRef,
-  onClose,
-  reducedMotion,
-}: Readonly<{
-  inputRef: RefObject<HTMLInputElement | null>;
-  onClose: () => void;
-  reducedMotion: boolean | null;
-}>) {
-  return (
-    <motion.section
-      id="header-search-panel"
-      aria-label="Search the catalogue"
-      initial={reducedMotion ? false : { opacity: 0, y: -8 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={reducedMotion ? { opacity: 0 } : { opacity: 0, y: -6 }}
-      transition={{ duration: reducedMotion ? 0 : 0.2 }}
-      className="absolute top-full right-0 left-0 z-20 border-t border-line-soft bg-white"
-    >
-      <div className="ui-container py-8 sm:py-10">
-        <div className="mx-auto max-w-4xl">
-          <div className="flex items-center justify-between gap-5">
-            <div>
-              <p className="header-type-label text-subtle">Search</p>
-              <h2 className="header-type-editorial-heading mt-1">What are you looking for?</h2>
-            </div>
-            <button
-              type="button"
-              className="inline-flex size-11 shrink-0 items-center justify-center"
-              aria-label="Close search"
-              onClick={onClose}
-            >
-              <CloseIcon className="size-5" />
-            </button>
-          </div>
-          <form
-            action="/search"
-            method="get"
-            role="search"
-            className="mt-7 flex border-b border-ink"
-          >
-            <label htmlFor="header-search" className="ui-visually-hidden">
-              Search frames, designers and collections
-            </label>
-            <input
-              ref={inputRef}
-              id="header-search"
-              name="q"
-              type="search"
-              autoComplete="off"
-              placeholder="Search frames, designers and collections"
-              className="min-h-14 min-w-0 flex-1 border-0 bg-transparent px-0 text-base outline-none placeholder:text-subtle"
-            />
-            <button
-              type="submit"
-              className="header-type-action inline-flex min-h-14 items-center gap-2 pl-5"
-            >
-              Search
-              <ArrowRightIcon className="size-4" />
-            </button>
-          </form>
-          <p className="mt-3 text-xs leading-5 text-subtle">
-            Try “titanium”, “round” or a designer name.
-          </p>
-        </div>
-      </div>
-    </motion.section>
-  );
-}
-
 export function HeaderNavigation({
   storeName,
   items,
   utilityLinks,
+  searchContent,
   cartCount,
 }: HeaderNavigationProps) {
   const [activeMenuId, setActiveMenuId] = useState<string | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [expandedMobileItemId, setExpandedMobileItemId] = useState<string | null>(null);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [recentSearches, setRecentSearches] = useState<readonly string[]>([]);
   const reducedMotion = useReducedMotion();
   const headerRef = useRef<HTMLElement>(null);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
@@ -379,13 +313,34 @@ export function HeaderNavigation({
     setSearchOpen((isOpen) => !isOpen);
   };
 
+  const rememberSearch = (term: string) => {
+    const normalizedTerm = term.trim();
+    if (!normalizedTerm) {
+      return;
+    }
+
+    setRecentSearches((currentSearches) =>
+      [
+        normalizedTerm,
+        ...currentSearches.filter(
+          (currentTerm) => currentTerm.toLocaleLowerCase() !== normalizedTerm.toLocaleLowerCase(),
+        ),
+      ].slice(0, 3),
+    );
+  };
+
   useEffect(() => {
     if (!searchOpen) {
       return;
     }
 
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
     const frame = window.requestAnimationFrame(() => searchInputRef.current?.focus());
-    return () => window.cancelAnimationFrame(frame);
+    return () => {
+      window.cancelAnimationFrame(frame);
+      document.body.style.overflow = previousOverflow;
+    };
   }, [searchOpen]);
 
   useEffect(() => {
@@ -665,8 +620,12 @@ export function HeaderNavigation({
 
       <AnimatePresence initial={false}>
         {searchOpen ? (
-          <SearchPanel
+          <HeaderSearchPanel
+            content={searchContent}
             inputRef={searchInputRef}
+            recentSearches={recentSearches}
+            onClearRecentSearches={() => setRecentSearches([])}
+            onCommitSearch={rememberSearch}
             onClose={() => {
               setSearchOpen(false);
               searchTriggerRef.current?.focus();
