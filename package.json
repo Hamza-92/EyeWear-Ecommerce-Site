@@ -10,12 +10,14 @@
   ],
   "scripts": {
     "build": "npm run build --workspace @eyewear/storefront && npm run build --workspace @eyewear/backend",
+    "build:storefront": "npm run build --workspace @eyewear/storefront",
     "dev:storefront": "npm run dev --workspace @eyewear/storefront",
     "dev:admin": "npm run dev --workspace @eyewear/backend",
     "dev:backend": "composer --working-dir=apps/backend run dev:server",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "lint": "npm run lint --workspace @eyewear/storefront && npm run lint --workspace @eyewear/backend && composer --working-dir=apps/backend run lint",
+    "start:storefront": "npm run start --workspace @eyewear/storefront",
     "test": "npm run test --workspace @eyewear/storefront && composer --working-dir=apps/backend run test",
     "typecheck": "npm run typecheck --workspace @eyewear/storefront && npm run typecheck --workspace @eyewear/backend",
     "verify": "npm run format:check && npm run lint && npm run typecheck && npm run test && npm run build"

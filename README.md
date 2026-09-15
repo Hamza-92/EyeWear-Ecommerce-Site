@@ -83,6 +83,8 @@ without local services. The first persistent domain slice should add PostgreSQL 
 ## Configuration notes
 
 - Preview builds are non-indexable until `NEXT_PUBLIC_INDEXABLE=true` is set deliberately.
+- Private showcase deployments can enable the server-only preview access gate documented in
+  [docs/deployment-hostinger.md](docs/deployment-hostinger.md).
 - Redis is the default Laravel cache, queue, and session store; Predis keeps local setup portable.
 - Asset storage is provider-neutral and ready for an S3-compatible service such as Cloudflare R2.
 - Search, payment, transactional email, and analytics drivers are intentionally unset or logging in

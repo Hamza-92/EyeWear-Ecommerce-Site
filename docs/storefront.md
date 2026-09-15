@@ -28,6 +28,13 @@ sitemap entry. `NEXT_PUBLIC_INDEXABLE` defaults to false so a demo or unfinished
 accidentally indexed. Product work must add Product/Offer and Breadcrumb JSON-LD with server-known
 availability and price data.
 
+For a private external showcase, `src/proxy.ts` can place the entire storefront behind server-side
+HTTP Basic authentication. Its credentials are server-only environment variables; the gate fails
+closed when enabled without both values and marks authenticated responses private and non-indexable.
+Framework, metadata, and public image assets bypass the gate so Next.js image optimization continues
+to work; they must never contain secrets or customer data. Use the gate only over HTTPS and follow
+[`deployment-hostinger.md`](deployment-hostinger.md).
+
 ## Performance baseline
 
 - Use `next/image` with accurate `sizes`; reserve eager loading for the actual LCP asset.
