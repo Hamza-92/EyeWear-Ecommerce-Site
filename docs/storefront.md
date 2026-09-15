@@ -41,13 +41,13 @@ availability and price data.
 and can later consume a host-resolved configuration endpoint. Never expose provider credentials or
 private store settings through `NEXT_PUBLIC_*` variables.
 
-## Header prototype
+## Homepage proposal prototype
 
-The current customer-facing build intentionally contains only the storefront header. Navigation
-content lives in `src/config/navigation.ts`, separate from the interactive component, so a CMS or
-store-scoped API can replace the proposal copy without changing the header structure. The links
-describe planned storefront routes; their destination pages are deliberately outside this
-header-only design stage.
+The current customer-facing build contains the storefront header and the first homepage hero.
+Navigation content lives in `src/config/navigation.ts`, separate from the interactive component, so
+a CMS or store-scoped API can replace the proposal copy without changing the header structure. The
+links describe planned storefront routes; their destination pages are deliberately outside this
+static design stage.
 
 Desktop navigation uses full-width editorial panels with three link groups and two promotional
 images. The same information becomes expandable sections in a focus-trapped mobile dialog. The menu
@@ -62,14 +62,33 @@ backend. The form retains a `/search?q=` destination for the future server-rende
 Replace the sample content with a typed Laravel catalogue gateway during the vertical catalog slice,
 without changing the presentation component.
 
+The homepage hero remains a Server Component. Its campaign copy, calls to action, alt text, and
+asset dimensions live in `src/config/homepage.ts` so the future CMS boundary can replace proposal
+content without coupling content to layout. It uses a responsive `<picture>` generated through
+Next.js image props: the browser downloads the dedicated portrait crop below `48rem` and the wide
+campaign crop above it. Only this LCP image receives high fetch priority. The CSS-only entrance uses
+a restrained soft-to-sharp image resolve and staggered copy, completes in under one second, and is
+removed for reduced-motion users. The quiet secondary action provides matching hover and keyboard
+focus feedback without scaling.
+
+Deferred experience work, prerequisites, release stages, and launch gates are tracked in
+[`storefront-experience-backlog.md`](storefront-experience-backlog.md). Add proposed enhancements
+there before implementation so interaction ideas do not become unowned visual effects.
+
 ### Replaceable brand and image assets
 
 - Logo: supply SVG where possible. The desktop artwork slot is `180 × 48 px`; provide a transparent
   `360 × 96 px` PNG if raster artwork is required. On narrow screens it is contained within a
-  `124 × 44 px` area without changing the artwork ratio.
+  `124 × 44 px` area without changing the artwork ratio. The temporary proposal wordmark is a
+  transparent `720 × 192 px` PNG at `public/images/brand/eyewear-logo-concept.png`; replace the
+  `branding.logoUrl` value in `src/config/store.ts` when final brand artwork is available.
 - Mega-menu photography: use portrait `4:5` images, ideally at least `1600 × 2000 px`, with the main
   subject kept away from the outer edges. Final WebP or AVIF files should normally remain below
   `350 KB` after visual review.
 - Temporary proposal images are stored in `public/images/navigation`. They are original AI test
   assets with no embedded brand marks and may be replaced by changing only the image paths and alt
   text in `src/config/navigation.ts`.
+- Homepage hero: provide a wide `3:2` campaign image and a coordinated portrait `2:3` crop. Keep the
+  model and eyewear to the right with pale negative space for copy, and do not embed text or logos.
+  Temporary optimized proposal images are stored in `public/images/home`; paths, intrinsic sizes,
+  and alt text are replaceable in `src/config/homepage.ts`.

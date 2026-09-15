@@ -26,6 +26,7 @@ import type { SearchPreviewContent } from "@/config/search-preview";
 
 type HeaderNavigationProps = Readonly<{
   storeName: string;
+  logoUrl: string | null;
   items: readonly NavigationItem[];
   utilityLinks: readonly NavigationLink[];
   searchContent: SearchPreviewContent;
@@ -41,17 +42,33 @@ const focusableSelector = [
   '[tabindex]:not([tabindex="-1"])',
 ].join(",");
 
-function LogoPlaceholder({ storeName }: Readonly<{ storeName: string }>) {
+function BrandLogo({
+  storeName,
+  logoUrl,
+}: Readonly<{ storeName: string; logoUrl: string | null }>) {
   return (
     <Link
       href="/"
-      className="inline-flex h-11 w-[7.75rem] shrink-0 items-center justify-center border border-dashed border-subtle/70 bg-canvas px-2 text-center sm:h-12 sm:w-[11.25rem]"
+      className={`relative inline-flex h-11 w-[7.75rem] shrink-0 items-center justify-center bg-canvas text-center sm:h-12 sm:w-[11.25rem] ${
+        logoUrl ? "" : "border border-dashed border-subtle/70 px-2"
+      }`}
       aria-label={`${storeName} home`}
     >
-      <span aria-hidden="true" className="leading-none">
-        <span className="header-type-logo block">Logo placeholder</span>
-        <span className="header-type-logo-spec mt-1 block text-subtle">180 × 48 px · SVG</span>
-      </span>
+      {logoUrl ? (
+        <Image
+          src={logoUrl}
+          alt=""
+          fill
+          sizes="(min-width: 640px) 180px, 124px"
+          className="object-contain"
+          priority
+        />
+      ) : (
+        <span aria-hidden="true" className="leading-none">
+          <span className="header-type-logo block">Logo placeholder</span>
+          <span className="header-type-logo-spec mt-1 block text-subtle">180 × 48 px · SVG</span>
+        </span>
+      )}
     </Link>
   );
 }
@@ -268,6 +285,7 @@ function MobileNavigation({
 
 export function HeaderNavigation({
   storeName,
+  logoUrl,
   items,
   utilityLinks,
   searchContent,
@@ -503,7 +521,7 @@ export function HeaderNavigation({
 
       <div className="border-b border-line-soft bg-canvas">
         <div className="ui-container grid min-h-[4.875rem] grid-cols-[auto_1fr] items-center gap-2 sm:gap-6 xl:grid-cols-[11.25rem_1fr_11.25rem]">
-          <LogoPlaceholder storeName={storeName} />
+          <BrandLogo storeName={storeName} logoUrl={logoUrl} />
 
           <nav
             aria-label="Primary navigation"
@@ -651,7 +669,7 @@ export function HeaderNavigation({
           >
             <div className="ui-container flex min-h-[100svh] flex-col">
               <div className="flex min-h-[4.875rem] items-center justify-between border-b border-line-soft">
-                <LogoPlaceholder storeName={storeName} />
+                <BrandLogo storeName={storeName} logoUrl={logoUrl} />
                 <button
                   ref={mobileCloseRef}
                   type="button"

@@ -7,6 +7,7 @@ export function StorefrontHeader() {
   return (
     <HeaderNavigation
       storeName={storeConfig.name}
+      logoUrl={storeConfig.branding.logoUrl}
       items={primaryNavigation}
       utilityLinks={utilityNavigation}
       searchContent={searchPreviewContent}

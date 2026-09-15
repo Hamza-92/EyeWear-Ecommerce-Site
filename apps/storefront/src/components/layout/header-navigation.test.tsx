@@ -9,6 +9,7 @@ function renderHeader(cartCount = 0) {
   return render(
     <HeaderNavigation
       storeName="Test Eyewear"
+      logoUrl={null}
       items={primaryNavigation}
       utilityLinks={utilityNavigation}
       searchContent={searchPreviewContent}
@@ -183,6 +184,7 @@ describe("HeaderNavigation", () => {
     rerender(
       <HeaderNavigation
         storeName="Test Eyewear"
+        logoUrl={null}
         items={primaryNavigation}
         utilityLinks={utilityNavigation}
         searchContent={searchPreviewContent}

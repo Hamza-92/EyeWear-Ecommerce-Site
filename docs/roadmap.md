@@ -1,5 +1,10 @@
 # Roadmap
 
+This delivery sequence is complemented by the prioritized customer-experience and launch criteria in
+[`storefront-experience-backlog.md`](storefront-experience-backlog.md). The backlog does not
+override domain dependencies in this roadmap; it defines when experience work becomes credible and
+how it must be accepted.
+
 ## Step 1 — Foundation (current)
 
 Monorepo, Next.js storefront shell, Laravel REST/API base, Inertia React admin shell, PostgreSQL and

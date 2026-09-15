@@ -10,6 +10,12 @@ type MockImageProps = ImgHTMLAttributes<HTMLImageElement> & {
   priority?: boolean;
 };
 
+type MockGetImageProps = MockImageProps & {
+  height: number;
+  src: string | { src: string };
+  width: number;
+};
+
 type MockLinkProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
   children: ReactNode;
   href: string;
@@ -23,6 +29,17 @@ vi.mock("next/image", () => ({
 
     // eslint-disable-next-line @next/next/no-img-element
     return <img alt={props.alt ?? ""} {...imageProps} />;
+  },
+  getImageProps: ({ src, ...props }: MockGetImageProps) => {
+    const resolvedSource = typeof src === "string" ? src : src.src;
+
+    return {
+      props: {
+        ...props,
+        src: resolvedSource,
+        srcSet: `${resolvedSource} 1x`,
+      },
+    };
   },
 }));
 

@@ -19,6 +19,6 @@ export const storeConfig = {
   branding: {
     displayFont: "Instrument Serif",
     interfaceFont: "Manrope",
-    logoUrl: null,
+    logoUrl: "/images/brand/eyewear-logo-concept.png",
   },
 } satisfies StorefrontConfig;
