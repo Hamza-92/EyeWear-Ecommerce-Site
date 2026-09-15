@@ -457,6 +457,9 @@ html {
   height: 1px;
   background: currentColor;
   content: "";
+  transform: scaleX(0.84);
+  transform-origin: left;
+  transition: transform var(--duration-base) var(--ease-premium);
 }
 
 .home-product-edit__view-link svg {
@@ -473,6 +476,11 @@ html {
 .home-product-edit__view-link:hover svg,
 .home-product-edit__view-link:focus-visible svg {
   transform: translateX(0.25rem);
+}
+
+.home-product-edit__view-link:hover .home-product-edit__view-label::after,
+.home-product-edit__view-link:focus-visible .home-product-edit__view-label::after {
+  transform: scaleX(1);
 }
 
 .home-product-edit__grid {
