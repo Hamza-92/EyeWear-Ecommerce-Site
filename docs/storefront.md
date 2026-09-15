@@ -71,6 +71,14 @@ a restrained soft-to-sharp image resolve and staggered copy, completes in under 
 removed for reduced-motion users. The quiet secondary action provides matching hover and keyboard
 focus feedback without scaling.
 
+The proposal homepage now continues into a four-product **New & considered** edit. The section and
+product content remain server-rendered; only each wishlist button is a small Client Component. The
+temporary wishlist state is intentionally local to the rendered page and must be replaced by the
+store-scoped wishlist contract before launch. Paired still-life and on-face images crossfade on
+pointer hover and keyboard focus, while touch users retain the complete still-life presentation. The
+grid uses four columns on wide screens and two columns at tablet and mobile sizes. Product routes,
+prices, colour counts, and availability are illustrative V0 content and are not production claims.
+
 Deferred experience work, prerequisites, release stages, and launch gates are tracked in
 [`storefront-experience-backlog.md`](storefront-experience-backlog.md). Add proposed enhancements
 there before implementation so interaction ideas do not become unowned visual effects.
@@ -92,3 +100,8 @@ there before implementation so interaction ideas do not become unowned visual ef
   model and eyewear to the right with pale negative space for copy, and do not embed text or logos.
   Temporary optimized proposal images are stored in `public/images/home`; paths, intrinsic sizes,
   and alt text are replaceable in `src/config/homepage.ts`.
+- Homepage product edit: provide coordinated still-life and on-face portraits at `3:4`, ideally at
+  least `1200 × 1600 px`. The exact frame and colour must match across each pair, with the eyewear
+  fully visible and away from overlay controls. Temporary AI proposal pairs live in
+  `public/images/products/home-edit`; their paths and product copy are replaceable in
+  `src/config/homepage.ts`.

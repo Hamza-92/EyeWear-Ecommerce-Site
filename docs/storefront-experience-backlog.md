@@ -90,6 +90,26 @@ P1 acceptance: each section has a distinct customer job, one clear next action, 
 responsive designs, and complete loading/empty/error states. Remove any section that merely repeats
 navigation or exists to fill vertical space.
 
+### New and considered frame edit
+
+The V0 proposal foundation is implemented with four server-rendered products, paired still-life and
+on-face imagery, accurate image sizing, useful alt text, restrained product metadata, a responsive
+four/two-column layout, and an isolated accessible wishlist preview control. Alternate imagery is a
+progressive enhancement; no essential product detail depends on hover.
+
+Before this section can move beyond V0:
+
+- P0: replace proposal products, prices, colour counts, and dead routes with store-scoped catalogue,
+  variant, price, availability, currency, and publication data from the Laravel API;
+- P1: connect wishlist state across anonymous and authenticated sessions, including optimistic,
+  failure, offline, and merge behavior;
+- P1: give merchandising owners validated product sequencing, alternate-media selection, alt text,
+  scheduling, preview, and rollback controls;
+- P1: decide whether touch users benefit from an explicit "On face" media control after testing with
+  real product imagery; do not add it solely to imitate desktop hover;
+- P1: add consent-aware impression and product-selection analytics only after the shared event
+  contract exists, and measure downstream shopping quality rather than card clicks alone.
+
 ## Navigation and search
 
 ### P0
