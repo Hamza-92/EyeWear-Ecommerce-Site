@@ -50,11 +50,11 @@ private store settings through `NEXT_PUBLIC_*` variables.
 
 ## Homepage proposal prototype
 
-The current customer-facing build contains the storefront header and the first homepage hero.
-Navigation content lives in `src/config/navigation.ts`, separate from the interactive component, so
-a CMS or store-scoped API can replace the proposal copy without changing the header structure. The
-links describe planned storefront routes; their destination pages are deliberately outside this
-static design stage.
+The current customer-facing build contains the storefront header, hero, product edit, and a
+three-route shop-by-intent section. Navigation content lives in `src/config/navigation.ts`, separate
+from the interactive component, so a CMS or store-scoped API can replace the proposal copy without
+changing the header structure. The links describe planned storefront routes; their destination pages
+are deliberately outside this static design stage.
 
 Desktop navigation uses full-width editorial panels with three link groups and two promotional
 images. The same information becomes expandable sections in a focus-trapped mobile dialog. The menu
@@ -86,6 +86,21 @@ pointer hover and keyboard focus, while touch users retain the complete still-li
 grid uses four columns on wide screens and two columns at tablet and mobile sizes. Product routes,
 prices, colour counts, and availability are illustrative V0 content and are not production claims.
 
+The **Shop by intent** section is also a Server Component and keeps its proposal content in
+`src/config/homepage.ts`. It deliberately offers three different customer decisions: shape,
+material, and fit. This avoids repeating the top-level product navigation. The asymmetric desktop
+composition becomes a two-column tablet layout and a single reading order on mobile. Each complete
+editorial card is a link with a visible keyboard focus state; below-fold images remain lazy-loaded,
+and image zoom is disabled for reduced-motion users. Proposal destinations remain illustrative until
+the corresponding server-rendered discovery routes are built.
+
+Homepage sections use a small progressive scroll-reveal controller. Server-rendered content is
+visible by default, becomes observed only after hydration, reveals once with restrained opacity and
+vertical movement, and remains immediate for reduced-motion users or browsers without
+`IntersectionObserver`. The commerce header, search, mega menu, mobile drawer, product edit, and
+shop-by-intent section share a crisp white surface; warm ivory is reserved for the hero and media
+areas so the proposal reads as contemporary premium rather than uniformly sepia editorial.
+
 Deferred experience work, prerequisites, release stages, and launch gates are tracked in
 [`storefront-experience-backlog.md`](storefront-experience-backlog.md). Add proposed enhancements
 there before implementation so interaction ideas do not become unowned visual effects.
@@ -112,3 +127,7 @@ there before implementation so interaction ideas do not become unowned visual ef
   fully visible and away from overlay controls. Temporary AI proposal pairs live in
   `public/images/products/home-edit`; their paths and product copy are replaceable in
   `src/config/homepage.ts`.
+- Homepage shop by intent: provide one portrait `4:5` shape image and two landscape `3:2` material
+  and fit images. Keep frames fully visible and recognizable at responsive crops. Optimized proposal
+  images live in `public/images/home/shop-by-intent`; paths, intrinsic sizes, alt text, and card
+  copy are replaceable in `src/config/homepage.ts`.

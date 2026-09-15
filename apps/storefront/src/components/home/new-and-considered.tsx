@@ -4,12 +4,19 @@ import { ArrowRightIcon } from "@/components/icons/header-icons";
 import { PreviewWishlistButton } from "@/components/home/preview-wishlist-button";
 import type { HomepageProduct, NewAndConsideredContent } from "@/config/homepage";
 
-function ProductCard({ product }: Readonly<{ product: HomepageProduct }>) {
+function ProductCard({
+  product,
+  revealDelay,
+}: Readonly<{ product: HomepageProduct; revealDelay: number }>) {
   const fullName = `${product.brand} ${product.name}`;
   const colourLabel = `${product.colourCount} ${product.colourCount === 1 ? "colour" : "colours"}`;
 
   return (
-    <article className="home-product-card">
+    <article
+      className="home-product-card"
+      data-scroll-reveal
+      data-scroll-reveal-delay={revealDelay}
+    >
       <div className="home-product-card__media">
         <a
           aria-label={`View ${fullName}`}
@@ -59,7 +66,7 @@ export function NewAndConsidered({ content }: Readonly<{ content: NewAndConsider
   return (
     <section aria-labelledby="new-and-considered-title" className="home-product-edit">
       <div className="ui-container">
-        <header className="home-product-edit__header">
+        <header className="home-product-edit__header" data-scroll-reveal>
           <div className="home-product-edit__heading">
             <p className="home-product-edit__eyebrow">{content.eyebrow}</p>
             <h2 id="new-and-considered-title">{content.title}</h2>
@@ -75,8 +82,8 @@ export function NewAndConsidered({ content }: Readonly<{ content: NewAndConsider
         </header>
 
         <div className="home-product-edit__grid">
-          {content.products.map((product) => (
-            <ProductCard key={product.id} product={product} />
+          {content.products.map((product, index) => (
+            <ProductCard key={product.id} product={product} revealDelay={index} />
           ))}
         </div>
       </div>

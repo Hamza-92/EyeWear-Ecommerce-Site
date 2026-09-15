@@ -110,6 +110,44 @@ Before this section can move beyond V0:
 - P1: add consent-aware impression and product-selection analytics only after the shared event
   contract exists, and measure downstream shopping quality rather than card clicks alone.
 
+### Shop by intent
+
+The V0 proposal foundation is implemented as a server-rendered, three-path editorial section for
+shape, material, and fit. It uses managed static content, responsive asymmetric composition, useful
+image alternatives, full-card links, visible keyboard focus, and reduced-motion-safe image behavior.
+It is intentionally limited to three customer decisions so it does not duplicate the full
+navigation.
+
+Before this section can move beyond V0:
+
+- P0: replace proposal routes with live, canonical discovery and guide destinations backed by real
+  catalogue facets and store-scoped publication data;
+- P1: give content owners validated card order, responsive media, focal points, alt text,
+  scheduling, preview, locale, and rollback controls;
+- P1: test whether shape, material, and fit are the strongest starting intents using downstream
+  product discovery quality, not raw card-click volume;
+- P1: consider a dedicated shape landing page so the shape card can introduce the full silhouette
+  range rather than routing to a single round-frame collection;
+- P1: add consent-aware selection analytics only after the shared event contract exists.
+
+### Visual direction and motion foundation
+
+The current proposal uses a white commerce shell, warm campaign imagery, controlled Instrument Serif
+display sizes, and a lightweight one-time scroll reveal for section introductions and cards. Content
+remains visible without JavaScript, and reduced-motion users receive the final state without the
+transition.
+
+As the remaining homepage sections are added:
+
+- reserve warm full-width surfaces for sections with a clear editorial or service purpose instead of
+  alternating background colour mechanically;
+- validate the temporary serif wordmark against a final brand identity, since the logo is now the
+  strongest remaining classical signal in the header;
+- keep scroll motion to opacity and short vertical travel, never replay it when users scroll back,
+  and do not stack it with parallax or decorative pointer effects;
+- complete a final rhythm audit only after the footer is present, while continuing section-level
+  reviews now so visual drift is caught early.
+
 ## Navigation and search
 
 ### P0

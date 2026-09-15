@@ -81,6 +81,29 @@ export interface NewAndConsideredContent {
   products: readonly HomepageProduct[];
 }
 
+export interface ShopByIntentItem {
+  id: string;
+  label: string;
+  title: string;
+  description: string;
+  actionLabel: string;
+  href: string;
+  prominence: "feature" | "standard";
+  image: {
+    src: string;
+    alt: string;
+    width: number;
+    height: number;
+  };
+}
+
+export interface ShopByIntentContent {
+  eyebrow: string;
+  title: string;
+  description: string;
+  items: readonly ShopByIntentItem[];
+}
+
 export const newAndConsideredContent: NewAndConsideredContent = {
   eyebrow: "New & considered",
   title: "Frames worth a closer look.",
@@ -155,6 +178,61 @@ export const newAndConsideredContent: NewAndConsideredContent = {
       },
       alternateImage: {
         src: "/images/products/home-edit/solis-on-face.jpg",
+      },
+    },
+  ],
+};
+
+export const shopByIntentContent: ShopByIntentContent = {
+  eyebrow: "Find your frame",
+  title: "Begin with what matters.",
+  description:
+    "Choose by silhouette, material, or the way a frame should sit. Three considered paths into the collection.",
+  items: [
+    {
+      id: "shape",
+      label: "Shape",
+      title: "A silhouette that feels like you.",
+      description:
+        "Discover soft rounds, refined angles, and expressive cat-eye forms chosen to frame a face beautifully.",
+      actionLabel: "Explore shapes",
+      href: "/eyeglasses/round",
+      prominence: "feature",
+      image: {
+        src: "/images/home/shop-by-intent/shape.jpg",
+        alt: "Model wearing sculptural soft-square tortoiseshell eyeglasses in warm window light",
+        width: 1122,
+        height: 1402,
+      },
+    },
+    {
+      id: "material",
+      label: "Material",
+      title: "Acetate or titanium.",
+      description: "Explore colour and depth, or choose precise, barely-there lightness.",
+      actionLabel: "Compare materials",
+      href: "/eyeglasses/acetate",
+      prominence: "standard",
+      image: {
+        src: "/images/home/shop-by-intent/material.jpg",
+        alt: "Amber acetate and gunmetal titanium eyeglasses arranged on pale travertine",
+        width: 1536,
+        height: 1024,
+      },
+    },
+    {
+      id: "fit",
+      label: "Fit",
+      title: "Made to sit right.",
+      description: "Understand proportions for narrow, regular, wide, and low-bridge fits.",
+      actionLabel: "Understand fit",
+      href: "/guides/frame-fit",
+      prominence: "standard",
+      image: {
+        src: "/images/home/shop-by-intent/fit.jpg",
+        alt: "Side portrait showing how slim espresso eyeglasses sit across the bridge and temples",
+        width: 1536,
+        height: 1024,
       },
     },
   ],

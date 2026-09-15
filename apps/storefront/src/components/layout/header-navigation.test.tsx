@@ -32,7 +32,10 @@ describe("HeaderNavigation", () => {
       "href",
       "/eyeglasses",
     );
-    expect(within(panel).getByRole("link", { name: "Low bridge" })).toBeVisible();
+    const lowBridgeLink = within(panel).getByRole("link", { name: "Low bridge" });
+    expect(lowBridgeLink).toBeVisible();
+    expect(lowBridgeLink).toHaveClass("mega-menu-link");
+    expect(within(lowBridgeLink).getByText("Low bridge")).toHaveClass("mega-menu-link__label");
     expect(
       within(panel).getByAltText(
         "Model wearing translucent optical frames in warm architectural light",

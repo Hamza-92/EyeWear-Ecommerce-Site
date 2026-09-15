@@ -49,7 +49,7 @@ function BrandLogo({
   return (
     <Link
       href="/"
-      className={`relative inline-flex h-11 w-[7.75rem] shrink-0 items-center justify-center bg-canvas text-center sm:h-12 sm:w-[11.25rem] ${
+      className={`relative inline-flex h-11 w-[7.75rem] shrink-0 items-center justify-center bg-white text-center sm:h-12 sm:w-[11.25rem] ${
         logoUrl ? "" : "border border-dashed border-subtle/70 px-2"
       }`}
       aria-label={`${storeName} home`}
@@ -164,11 +164,11 @@ function DesktopMegaPanel({
                     <li key={link.href}>
                       <a
                         href={link.href}
-                        className="header-type-link inline-flex min-h-11 items-center text-ink underline-offset-4 transition-colors hover:text-copy hover:underline"
+                        className="mega-menu-link header-type-link inline-flex min-h-11 items-center text-ink"
                         onClick={onNavigate}
                         data-mega-link
                       >
-                        {link.label}
+                        <span className="mega-menu-link__label">{link.label}</span>
                       </a>
                     </li>
                   ))}
@@ -256,10 +256,10 @@ function MobileNavigation({
                                 <li key={link.href}>
                                   <a
                                     href={link.href}
-                                    className="header-type-link inline-flex min-h-11 items-center"
+                                    className="mega-menu-link header-type-link inline-flex min-h-11 items-center"
                                     onClick={onNavigate}
                                   >
-                                    {link.label}
+                                    <span className="mega-menu-link__label">{link.label}</span>
                                   </a>
                                 </li>
                               ))}
@@ -491,7 +491,7 @@ export function HeaderNavigation({
   return (
     <header
       ref={headerRef}
-      className="sticky top-0 z-50 bg-canvas"
+      className="sticky top-0 z-50 bg-white"
       onPointerLeave={(event) => {
         if (event.pointerType !== "touch" && !searchOpen) {
           setActiveMenuId(null);
@@ -519,7 +519,7 @@ export function HeaderNavigation({
         </div>
       </div>
 
-      <div className="border-b border-line-soft bg-canvas">
+      <div className="border-b border-line-soft bg-white">
         <div className="ui-container grid min-h-[4.875rem] grid-cols-[auto_1fr] items-center gap-2 sm:gap-6 xl:grid-cols-[11.25rem_1fr_11.25rem]">
           <BrandLogo storeName={storeName} logoUrl={logoUrl} />
 
@@ -665,7 +665,7 @@ export function HeaderNavigation({
             animate={{ opacity: 1, x: 0 }}
             exit={reducedMotion ? { opacity: 0 } : { opacity: 0, x: 24 }}
             transition={{ duration: reducedMotion ? 0 : 0.24 }}
-            className="fixed inset-0 z-[70] overflow-y-auto overscroll-contain bg-canvas xl:hidden"
+            className="fixed inset-0 z-[70] overflow-y-auto overscroll-contain bg-white xl:hidden"
           >
             <div className="ui-container flex min-h-[100svh] flex-col">
               <div className="flex min-h-[4.875rem] items-center justify-between border-b border-line-soft">
@@ -692,25 +692,25 @@ export function HeaderNavigation({
               <div className="mt-auto grid grid-cols-2 gap-px border-t border-line-soft bg-line-soft py-px sm:grid-cols-4">
                 <a
                   href="/search"
-                  className="header-type-action flex min-h-14 items-center gap-3 bg-canvas px-4"
+                  className="header-type-action flex min-h-14 items-center gap-3 bg-white px-4"
                 >
                   <SearchIcon className="size-4" /> Search
                 </a>
                 <a
                   href="/account"
-                  className="header-type-action flex min-h-14 items-center gap-3 bg-canvas px-4"
+                  className="header-type-action flex min-h-14 items-center gap-3 bg-white px-4"
                 >
                   <AccountIcon className="size-4" /> Account
                 </a>
                 <a
                   href="/wishlist"
-                  className="header-type-action flex min-h-14 items-center gap-3 bg-canvas px-4"
+                  className="header-type-action flex min-h-14 items-center gap-3 bg-white px-4"
                 >
                   <HeartIcon className="size-4" /> Wishlist
                 </a>
                 <a
                   href="/help"
-                  className="header-type-action flex min-h-14 items-center bg-canvas px-4"
+                  className="header-type-action flex min-h-14 items-center bg-white px-4"
                 >
                   Help
                 </a>
